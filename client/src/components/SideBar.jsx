@@ -32,7 +32,7 @@ const SideBar = ({ projects }) => {
 
         <section>
           <h2 className="text-xl font-semibold">My Projects</h2>
-          <ul className="space-y-2">
+          <ul className="space-y-2 overflow-auto max-h-80">
             {projects.map(({ ProjectId, ProjectName }, index) => (
               <li
                 key={index}

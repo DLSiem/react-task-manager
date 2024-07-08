@@ -11,6 +11,30 @@ export const Projects = [
     ProjectId: 3,
     ProjectName: "Mobile Application",
   },
+  {
+    ProjectId: 4,
+    ProjectName: "E-commerce",
+  },
+  {
+    ProjectId: 5,
+    ProjectName: "Portfolio",
+  },
+  {
+    ProjectId: 6,
+    ProjectName: "Blog",
+  },
+  {
+    ProjectId: 7,
+    ProjectName: "Social Media",
+  },
+  {
+    ProjectId: 8,
+    ProjectName: "CRM",
+  },
+  {
+    ProjectId: 9,
+    ProjectName: "ERP",
+  },
 ];
 
 export const Tasks = [
