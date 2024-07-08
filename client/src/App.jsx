@@ -1,19 +1,42 @@
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Error from "./pages/Error";
+import Layout from "./pages/Layout";
+import HomeLayout from "./pages/HomeLayout";
+import Project from "./pages/Project";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    errorElement: <Error />,
+    children: [
+      {
+        path: "/",
+        element: <HomeLayout />,
+        children: [
+          {
+            path: "/",
+            index: true,
+            element: <Home />,
+          },
+          {
+            path: "project/:projectId",
+            element: <Project />,
+          },
+        ],
+      },
+      {
+        path: "/about",
+        element: <About />,
+      },
+    ],
+  },
+]);
+
 function App() {
-  return (
-    <>
-      <p className="text-2xl font-bold text-center">Hello </p>
-      {/* style following paragraph */}
-      <p className="text-lg text-gray-700 leading-relaxed mt-4 text-center items-center px-6">
-        This was also part of the routine. A few seconds of hesitation to see if
-        something else would be added to the order before demuring and saying
-        that would be all.
-      </p>
-      <p className="text-lg font-bold text-gray-700 leading-relaxed mt-4 text-center items-center px-6">
-        He ordered his regular breakfast. Two eggs sunnyside up, hash browns,
-        and two strips of bacon.
-      </p>
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
