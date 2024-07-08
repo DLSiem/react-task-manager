@@ -5,6 +5,10 @@ import Error from "./pages/Error";
 import Layout from "./pages/Layout";
 import HomeLayout from "./pages/HomeLayout";
 import Project from "./pages/Project";
+import {
+  loader as projectLoader,
+  loadProjectDetails,
+} from "./utils/loaders/project";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +19,7 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <HomeLayout />,
+        loader: projectLoader,
         children: [
           {
             path: "/",
@@ -24,6 +29,7 @@ const router = createBrowserRouter([
           {
             path: "project/:projectId",
             element: <Project />,
+            loader: ({ params }) => loadProjectDetails(params.projectId),
           },
         ],
       },
