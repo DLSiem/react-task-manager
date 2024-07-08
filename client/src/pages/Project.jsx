@@ -33,7 +33,11 @@ const Project = () => {
       <hr className="my-4" />
       <section>
         <h2 className="text-2xl font-semibold mb-4">Tasks</h2>
-        <ul className="space-y-2 overflow-y-auto max-h-96">
+        {tasks.length === 0 && (
+          <p className="text-lg text-gray-500">No tasks found</p>
+        )}
+
+        <ul className="space-y-2   max-h-80">
           {tasks.map(({ TaskName }, index) => (
             <li
               key={index}
