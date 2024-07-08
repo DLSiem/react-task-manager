@@ -1,9 +1,20 @@
-import { useLoaderData } from "react-router-dom";
+import { Form, useLoaderData } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { useRef } from "react";
 
 const Project = () => {
   const { project, tasks } = useLoaderData();
-  const { ProjectName } = project;
+  const { ProjectName, ProjectId } = project;
+
+  console.log("ProjectId", ProjectId);
+
+  const taskname = useRef(null);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Task Name", taskname.current.value);
+    taskname.current.value = "";
+    console.log("Task Name", taskname.current.value);
+  };
 
   return (
     <>
@@ -19,16 +30,21 @@ const Project = () => {
         </div>
       </section>
       <section className="mt-4">
-        <form className="flex space-x-4">
+        <Form method="post" className="flex space-x-4">
           <input
+            ref={taskname}
             type="text"
+            name="taskName"
             className="flex-grow p-2 border border-gray-300 rounded"
             placeholder="Enter task name"
           />
-          <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
             Add
           </button>
-        </form>
+        </Form>
       </section>
       <hr className="my-4" />
       <section>

@@ -11,7 +11,7 @@ import {
   loader as projectLoader,
   loadProjectDetails,
 } from "./utils/loaders/project";
-import { projectActions } from "./utils/actions/projectactions";
+import { projectActions, taskActions } from "./utils/actions/projectactions";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +38,7 @@ const router = createBrowserRouter([
             path: "project/:projectId",
             element: <Project />,
             loader: ({ params }) => loadProjectDetails(params.projectId),
+            action: taskActions,
           },
         ],
       },
