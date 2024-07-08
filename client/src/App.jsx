@@ -5,10 +5,13 @@ import Error from "./pages/Error";
 import Layout from "./pages/Layout";
 import HomeLayout from "./pages/HomeLayout";
 import Project from "./pages/Project";
+import CreateProject from "./pages/CreateProject";
+
 import {
   loader as projectLoader,
   loadProjectDetails,
 } from "./utils/loaders/project";
+import { projectActions } from "./utils/actions/projectactions";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +28,11 @@ const router = createBrowserRouter([
             path: "/",
             index: true,
             element: <Home />,
+          },
+          {
+            path: "create-project",
+            element: <CreateProject />,
+            action: projectActions,
           },
           {
             path: "project/:projectId",

@@ -9,7 +9,9 @@ const Header = () => {
             className="text-2xl font-bold
             text-white"
           >
-            TaskMan
+            <NavLink to="/" className="text-2xl font-bold text-white">
+              TaskMan
+            </NavLink>
           </h1>
 
           <ul className="flex">

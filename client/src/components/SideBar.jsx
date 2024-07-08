@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import propTypes from "prop-types";
 
@@ -13,25 +13,17 @@ const SideBar = ({ projects }) => {
           className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
-        <section className="mt-4">
-          <form className="">
-            <input
-              type="text"
-              placeholder="Create Project"
-              className="flex-grow p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-            />
-
-            <button
-              type="submit"
-              className="bg-blue-500 text-white rounded-md px-2 py-2 hover:bg-blue-700 flex items-center justify-center w-full mt-2"
-            >
-              <FaPlus className="mr-2" /> Create
-            </button>
-          </form>
-        </section>
+        <Link
+          to="create-project"
+          className="bg-blue-500 text-white rounded-md p-2 hover:bg-blue-700 flex items-center justify-center w-full"
+        >
+          <FaPlus className="mr-2" /> Create
+        </Link>
 
         <section>
-          <h2 className="text-xl font-semibold">My Projects</h2>
+          <h2 className="text-xl font-semibold mb-3 text-center">
+            My Projects
+          </h2>
           <ul className="space-y-2 overflow-auto max-h-80">
             {projects.map(({ ProjectId, ProjectName }, index) => (
               <li
