@@ -4,16 +4,19 @@ import { useRef } from "react";
 
 const Project = () => {
   const { project, tasks } = useLoaderData();
-  const { ProjectName, ProjectId } = project;
+  const { ProjectName } = project;
+  const taskNameRef = useRef(null);
 
-  console.log("ProjectId", ProjectId);
-
-  const taskname = useRef(null);
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Task Name", taskname.current.value);
-    taskname.current.value = "";
-    console.log("Task Name", taskname.current.value);
+  const handleSubmit = (event) => {
+    const form = event.target;
+    const fromData = new FormData(form);
+    fetch(form.action, {
+      method: form.method,
+      body: fromData,
+    }).then(() => {
+      form.reset();
+      taskNameRef.current.focus();
+    });
   };
 
   return (
@@ -30,10 +33,10 @@ const Project = () => {
         </div>
       </section>
       <section className="mt-4">
-        <Form method="post" className="flex space-x-4">
+        <Form method="post" className="flex space-x-4" onSubmit={handleSubmit}>
           <input
-            ref={taskname}
             type="text"
+            ref={taskNameRef}
             name="taskName"
             className="flex-grow p-2 border border-gray-300 rounded"
             placeholder="Enter task name"
@@ -53,7 +56,7 @@ const Project = () => {
           <p className="text-lg text-gray-500">No tasks found</p>
         )}
 
-        <ul className="space-y-2   max-h-80">
+        <ul className="space-y-2">
           {tasks.map(({ TaskName }, index) => (
             <li
               key={index}

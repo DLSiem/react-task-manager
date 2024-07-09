@@ -20,7 +20,6 @@ export const taskActions = async ({ request, params }) => {
     const formData = await request.formData();
 
     const projectId = parseInt(params.projectId);
-    console.log("projectId", projectId);
     const task = {
       TaskId: Math.floor(Math.random() * 10000) + 20,
       ProjectId: projectId,
