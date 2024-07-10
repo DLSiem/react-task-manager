@@ -1,33 +1,11 @@
-import {
-  Form,
-  useFetcher,
-  Outlet,
-  useLoaderData,
-  useRouteLoaderData,
-} from "react-router-dom";
-import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
-import { useRef } from "react";
+import { useFetcher, useLoaderData } from "react-router-dom";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import Tasks from "./Tasks";
 
 const Project = () => {
-  const { project, tasks } = useRouteLoaderData("project");
+  const { project, tasks } = useLoaderData();
+  const fetcher = useFetcher();
   const { ProjectName } = project;
-  // const fetcher = useFetcher();
-  // const [inputEmpty, setInputEmpty] = useState(true);
-  // const taskNameRef = useRef(null);
-
-  // const handleSubmit = (event) => {
-  //   const form = event.target;
-  //   const fromData = new FormData(form);
-
-  //   fetch(form.action, {
-  //     method: form.method,
-  //     body: fromData,
-  //   }).then(() => {
-  //     form.reset();
-  //     taskNameRef.current.focus();
-  //   });
-  // };
 
   return (
     <>
@@ -42,57 +20,7 @@ const Project = () => {
           </button>
         </div>
       </section>
-      <Outlet />
-
-      {/* {fetcher.data && fetcher.data.success && (
-        <div className="mt-4 text-green-500">Task added successfully!</div>
-      )}
-      {fetcher.data && !fetcher.data.success && (
-        <div className="mt-4 text-red-500">Error: {fetcher.data.error}</div>
-      )}
-      <section className="mt-4">
-        <Form method="post" className="flex space-x-4" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            ref={taskNameRef}
-            name="taskName"
-            className="flex-grow p-2 border border-gray-300 rounded"
-            placeholder="Enter task name"
-          />
-          <button
-            type="submit"
-            className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 `}
-          >
-            <FaPlus className="m-1" />
-          </button>
-        </Form>
-      </section>
-      <hr className="my-4" />
-      <section>
-        <h2 className="text-2xl font-semibold mb-4">Tasks</h2>
-        {tasks.length === 0 && (
-          <p className="text-lg text-gray-500">No tasks found</p>
-        )}
-
-        <ul className="space-y-2">
-          {tasks.map(({ TaskName }, index) => (
-            <li
-              key={index}
-              className="p-2 bg-gray-100 rounded flex justify-between"
-            >
-              <h3 className="text-lg">{TaskName}</h3>
-              <span className="flex">
-                <button className="flex items-center text-teal-500">
-                  <FaEdit className="mr-2" />
-                </button>
-                <button className="flex items-center text-orange-500">
-                  <FaTrash className="mr-1" />
-                </button>
-              </span>
-            </li>
-          ))}
-        </ul>
-      </section> */}
+      <Tasks tasks={tasks} />
     </>
   );
 };

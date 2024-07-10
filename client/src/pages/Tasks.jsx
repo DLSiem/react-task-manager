@@ -1,82 +1,30 @@
-import { useRef, useState } from "react";
-import {
-  Form,
-  useRouteLoaderData,
-  useFetcher,
-  useSubmit,
-} from "react-router-dom";
+import { useState } from "react";
+import {} from "react-router-dom";
 import { FaEdit, FaPlus, FaTrash, FaSave } from "react-icons/fa";
-const Tasks = () => {
-  const [method, setMethod] = useState("post");
-  const tasks = useRouteLoaderData("tasks");
-  //   console.log("tasks", tasks);
-  const taskNameRef = useRef(null);
-  const submit = useSubmit("tasks");
-  const fetcher = useFetcher();
+import propTypes from "prop-types";
 
-  //   const submit = (event) => {
-  //     event.preventDefault();
-  //     const form = event.target;
-  //     const formData = new FormData(form);
-  //     console.log("formData", formData);
-  //   };
-  //   const { tasks } = useLoaderData();
-  //   const fetcher = useFetcher()
-
-  //   const handleSubmit = (event) => {
-  //     event.preventDefault();
-  //     const form = event.target;
-  //     // const formData = new FormData(form);
-  //     // console.log("formData", formData);
-  //     console.log("form", form);
-  //     // console.log("form.action", form.action);
-  //     // console.log("form.method", form.method);
-  //     // const data = Object.fromEntries(formData.entries());
-  //     // console.log("data", data);
-  //     submit(form);
-  //     form.reset();
-  //   };
-  //   const handleCreateTask = (event) => {
-  //     event.preventDefault();
-  //     const form = event.target;
-  //     console.log("form", form);
-  //     // console.log("formData", formData);
-  //     submit(form);
-  //     form.reset();
-  //   };
-  //   const handleDeleteTask = (event) => {
-  //     event.preventDefault();
-  //     const form = event.target;
-  //     console.log("form", form);
-  //     // console.log("formData", formData);
-  //     submit(form);
-  //     form.reset();
-  //   };
-
+const Tasks = ({ tasks }) => {
   return (
     <>
       <section className="mt-4">
-        {method === "post" && (
-          <Form
-            method={method}
-            className="flex space-x-4"
-            //   onSubmit={handleCreateTask}
+        <form
+          method="post"
+          className="flex space-x-4"
+          //   onSubmit={handleCreateTask}
+        >
+          <input
+            type="text"
+            name="taskName"
+            className="flex-grow p-2 border border-gray-300 rounded"
+            placeholder="Enter task name"
+          />
+          <button
+            type="submit"
+            className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 `}
           >
-            <input
-              type="text"
-              ref={taskNameRef}
-              name="taskName"
-              className="flex-grow p-2 border border-gray-300 rounded"
-              placeholder="Enter task name"
-            />
-            <button
-              type="submit"
-              className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 `}
-            >
-              <FaPlus className="m-1" />
-            </button>
-          </Form>
-        )}
+            <FaPlus className="m-1" />
+          </button>
+        </form>
       </section>
       <hr className="my-4" />
 
@@ -87,16 +35,12 @@ const Tasks = () => {
         )}
 
         <ul className="space-y-2">
-          {tasks.map(({ TaskName }, index) => (
+          {tasks.map(({ TaskName, TaskId }, index) => (
             <li
               key={index}
               className="p-2 bg-gray-100 rounded flex justify-between"
             >
-              <Task
-                taskName={TaskName}
-                onEdit={() => setMethod("patch")}
-                onDelete={() => setMethod("delete")}
-              />
+              <Task taskName={TaskName} />
             </li>
           ))}
         </ul>
@@ -105,43 +49,26 @@ const Tasks = () => {
   );
 };
 
-// Tasks.propTypes = {
-//   tasks: propTypes.arrayOf(
-//     propTypes.shape({
-//       TaskId: propTypes.number,
-//       ProjectId: propTypes.number,
-//       TaskName: propTypes.string,
-//       Status: propTypes.string,
-//     })
-//   ),
-// };
+Tasks.propTypes = {
+  tasks: propTypes.arrayOf(
+    propTypes.shape({
+      TaskId: propTypes.number,
+      ProjectId: propTypes.number,
+      TaskName: propTypes.string,
+      Status: propTypes.string,
+    })
+  ),
+};
 
 export default Tasks;
-import { taskActions } from "../utils/actions/projectactions";
 
-const Task = ({ taskName, onEdit, onDelete }) => {
+const Task = ({ taskName }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const submit = useSubmit("tasks");
   let taskContent;
-
-  const handleEdit = (event) => {
-    event.preventDefault();
-    const form = event.target;
-    console.log("form", form);
-    taskActions({ request: form });
-    setIsEditing(false);
-  };
-
-  const handleDelete = (event) => {
-    event.preventDefault();
-    const form = event.target;
-    console.log("form", form);
-    submit(form);
-  };
 
   if (isEditing) {
     taskContent = (
-      <Form className="w-full flex" onSubmit={handleEdit}>
+      <form className="w-full flex">
         <input
           type="text"
           defaultValue={taskName}
@@ -153,7 +80,7 @@ const Task = ({ taskName, onEdit, onDelete }) => {
         >
           <FaSave className="mr-2" />
         </button>
-      </Form>
+      </form>
     );
   } else {
     taskContent = (
@@ -172,11 +99,11 @@ const Task = ({ taskName, onEdit, onDelete }) => {
   return (
     <>
       {taskContent}
-      <Form className="flex" onSubmit={handleDelete}>
+      <form className="flex">
         <button className="flex items-center text-red-500">
           <FaTrash className="" />
         </button>
-      </Form>
+      </form>
     </>
   );
 };

@@ -6,14 +6,12 @@ import Layout from "./pages/Layout";
 import HomeLayout from "./pages/HomeLayout";
 import Project from "./pages/Project";
 import CreateProject from "./pages/CreateProject";
-import Tasks from "./pages/Tasks";
 
 import {
   loader as projectLoader,
   loadProjectDetails,
-  loadTasks,
 } from "./utils/loaders/project";
-import { projectActions, taskActions } from "./utils/actions/projectactions";
+import { projectActions } from "./utils/actions/projectactions";
 
 const router = createBrowserRouter([
   {
@@ -39,19 +37,8 @@ const router = createBrowserRouter([
           {
             path: "project/:projectId",
             element: <Project />,
-            id: "project",
             loader: ({ params }) => loadProjectDetails(params.projectId),
             action: projectActions,
-            children: [
-              {
-                path: "",
-                index: true,
-                element: <Tasks />,
-                id: "tasks",
-                loader: loadTasks,
-                action: taskActions,
-              },
-            ],
           },
         ],
       },
