@@ -28,3 +28,15 @@ export const loadProjectDetails = async (id) => {
     throw error;
   }
 };
+
+export const loadTasks = async ({ params }) => {
+  const id = params.projectId;
+  const projectId = parseInt(id, 10);
+  try {
+    const tasks = Tasks.filter((task) => task.ProjectId === projectId);
+    return tasks;
+  } catch (error) {
+    console.error("Error loading tasks:", error);
+    throw error;
+  }
+};

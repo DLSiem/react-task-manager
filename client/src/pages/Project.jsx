@@ -1,23 +1,33 @@
-import { Form, useLoaderData } from "react-router-dom";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import {
+  Form,
+  useFetcher,
+  Outlet,
+  useLoaderData,
+  useRouteLoaderData,
+} from "react-router-dom";
+import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import { useRef } from "react";
+import Tasks from "./Tasks";
 
 const Project = () => {
-  const { project, tasks } = useLoaderData();
+  const { project, tasks } = useRouteLoaderData("project");
   const { ProjectName } = project;
-  const taskNameRef = useRef(null);
+  // const fetcher = useFetcher();
+  // const [inputEmpty, setInputEmpty] = useState(true);
+  // const taskNameRef = useRef(null);
 
-  const handleSubmit = (event) => {
-    const form = event.target;
-    const fromData = new FormData(form);
-    fetch(form.action, {
-      method: form.method,
-      body: fromData,
-    }).then(() => {
-      form.reset();
-      taskNameRef.current.focus();
-    });
-  };
+  // const handleSubmit = (event) => {
+  //   const form = event.target;
+  //   const fromData = new FormData(form);
+
+  //   fetch(form.action, {
+  //     method: form.method,
+  //     body: fromData,
+  //   }).then(() => {
+  //     form.reset();
+  //     taskNameRef.current.focus();
+  //   });
+  // };
 
   return (
     <>
@@ -32,6 +42,14 @@ const Project = () => {
           </button>
         </div>
       </section>
+      <Outlet />
+
+      {/* {fetcher.data && fetcher.data.success && (
+        <div className="mt-4 text-green-500">Task added successfully!</div>
+      )}
+      {fetcher.data && !fetcher.data.success && (
+        <div className="mt-4 text-red-500">Error: {fetcher.data.error}</div>
+      )}
       <section className="mt-4">
         <Form method="post" className="flex space-x-4" onSubmit={handleSubmit}>
           <input
@@ -43,9 +61,9 @@ const Project = () => {
           />
           <button
             type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 `}
           >
-            Add
+            <FaPlus className="m-1" />
           </button>
         </Form>
       </section>
@@ -74,7 +92,7 @@ const Project = () => {
             </li>
           ))}
         </ul>
-      </section>
+      </section> */}
     </>
   );
 };
