@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useFetcher, useParams } from "react-router-dom";
 import { FaEdit, FaPlus, FaTrash, FaSave } from "react-icons/fa";
 import propTypes from "prop-types";
+import CustomCheckbox from "../components/CustomCheckbox";
 
 const Tasks = ({ tasks }) => {
   const [taskName, setTaskName] = useState("");
@@ -55,12 +56,16 @@ const Tasks = ({ tasks }) => {
         )}
 
         <ul className="space-y-2">
-          {tasks.map(({ TaskName, TaskId }, index) => (
+          {tasks.map(({ TaskName, TaskId, Status }, index) => (
             <li
               key={index}
               className="p-2 bg-gray-100 rounded flex justify-between"
             >
-              <Task taskName={TaskName} taskId={TaskId} />
+              <Task
+                taskName={TaskName}
+                taskId={TaskId}
+                status={Status === "Pending" ? false : true}
+              />
             </li>
           ))}
         </ul>
@@ -82,10 +87,13 @@ Tasks.propTypes = {
 
 export default Tasks;
 
-const Task = ({ taskName, taskId }) => {
+const Task = ({ taskName, taskId, status }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(taskName);
+  const checked = status;
   const fetcher = useFetcher();
+  console.log("Status", status, taskId);
+  console.log("Pending" === status);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -122,7 +130,9 @@ const Task = ({ taskName, taskId }) => {
   } else {
     taskContent = (
       <div className="flex justify-between w-full">
-        <h3 className="text-lg flex">{taskName}</h3>
+        <h3 className={`text-lg flex ${checked ? "line-through" : ""}`}>
+          {taskName}
+        </h3>
         <button
           className="flex items-center text-blue-500"
           onClick={() => setIsEditing(true)}
@@ -135,6 +145,7 @@ const Task = ({ taskName, taskId }) => {
 
   return (
     <>
+      <CustomCheckbox check={checked} taskId={taskId} />
       {taskContent}
 
       <button
@@ -160,4 +171,5 @@ const Task = ({ taskName, taskId }) => {
 Task.propTypes = {
   taskName: propTypes.string,
   taskId: propTypes.number,
+  status: propTypes.bool,
 };

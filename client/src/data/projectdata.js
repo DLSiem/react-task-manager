@@ -54,7 +54,7 @@ export const Tasks = [
     TaskId: 3,
     ProjectId: 1,
     TaskName: "Frontend Development",
-    Status: "In Progress",
+    Status: "Pending",
   },
   {
     TaskId: 4,
@@ -72,7 +72,7 @@ export const Tasks = [
     TaskId: 6,
     ProjectId: 2,
     TaskName: "Testing",
-    Status: "In Progress",
+    Status: "Pending",
   },
 
   {
@@ -91,7 +91,7 @@ export const Tasks = [
     TaskId: 9,
     ProjectId: 3,
     TaskName: "Testing",
-    Status: "In Progress",
+    Status: "Pending",
   },
   {
     TaskId: 10,

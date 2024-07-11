@@ -6,7 +6,7 @@ export const projectActions = async ({ request }) => {
     const formData = await request.formData();
     console.log("Form data:", formData.get("projectName"));
     console.log("Type", formData.get("type"));
-    const { type, projectName, projectId, taskName, taskId } =
+    const { type, projectName, projectId, taskName, taskId, taskStatus } =
       Object.fromEntries(formData);
 
     console.log("ProjectId", projectId);
@@ -53,7 +53,15 @@ export const projectActions = async ({ request }) => {
 
       case "update-task": {
         const task = Tasks.find((task) => task.TaskId === parseInt(taskId));
-        task.TaskName = taskName;
+        // update task name and status
+
+        task.TaskName = taskName ? taskName : task.TaskName;
+
+        // task.TaskName = taskName;
+        if (taskStatus) {
+          task.Status = taskStatus;
+        }
+        console.log("Task Status:", task);
         return null;
       }
 
