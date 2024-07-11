@@ -17,7 +17,7 @@ const SideBar = ({ projects }) => {
           to="create-project"
           className="bg-blue-500 text-white rounded-md p-2 hover:bg-blue-700 flex items-center justify-center w-full"
         >
-          <FaPlus className="mr-2" /> Create
+          <FaPlus className="mr-2" /> Create New Project
         </Link>
 
         <section>

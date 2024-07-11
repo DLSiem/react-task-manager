@@ -6,6 +6,7 @@ import CustomCheckbox from "../components/CustomCheckbox";
 
 const Tasks = ({ tasks }) => {
   const [taskName, setTaskName] = useState("");
+  const [create, setCreate] = useState(true);
   const fetcher = useFetcher();
   const params = useParams();
 
@@ -13,7 +14,7 @@ const Tasks = ({ tasks }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Task Name:", taskName);
+
     fetcher.submit(
       {
         type: "create-task",
@@ -29,24 +30,38 @@ const Tasks = ({ tasks }) => {
 
   return (
     <>
-      <section className="mt-4">
-        <form method="post" className="flex space-x-4" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="taskName"
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
-            className="flex-grow p-2 border border-gray-300 rounded"
-            placeholder="Enter task name"
-          />
-          <button
-            type="submit"
-            className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 `}
+      {create && (
+        <button
+          className="bg-green-600 text-white p-1 rounded px-2 hover:bg-green-700 mt-2"
+          onClick={() => setCreate(false)}
+        >
+          Add Task
+        </button>
+      )}
+      {!create && (
+        <section className="mt-4">
+          <form
+            method="post"
+            className="flex space-x-4"
+            onSubmit={handleSubmit}
           >
-            <FaPlus className="m-1" />
-          </button>
-        </form>
-      </section>
+            <input
+              type="text"
+              name="taskName"
+              value={taskName}
+              onChange={(e) => setTaskName(e.target.value)}
+              className="flex-grow p-2 border border-gray-300 rounded"
+              placeholder="Enter task name"
+            />
+            <button
+              type="submit"
+              className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 `}
+            >
+              <FaPlus className="m-1" />
+            </button>
+          </form>
+        </section>
+      )}
       <hr className="my-4" />
 
       <section>
@@ -56,9 +71,9 @@ const Tasks = ({ tasks }) => {
         )}
 
         <ul className="space-y-2">
-          {tasks.map(({ TaskName, TaskId, Status }, index) => (
+          {tasks.map(({ TaskName, TaskId, Status }) => (
             <li
-              key={index}
+              key={TaskId}
               className="p-2 bg-gray-100 rounded flex justify-between"
             >
               <Task
@@ -92,8 +107,6 @@ const Task = ({ taskName, taskId, status }) => {
   const [name, setName] = useState(taskName);
   const checked = status;
   const fetcher = useFetcher();
-  console.log("Status", status, taskId);
-  console.log("Pending" === status);
 
   const handleSubmit = (e) => {
     e.preventDefault();

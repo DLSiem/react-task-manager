@@ -4,14 +4,10 @@ import { Projects, Tasks } from "../../data/projectdata";
 export const projectActions = async ({ request }) => {
   try {
     const formData = await request.formData();
-    console.log("Form data:", formData.get("projectName"));
-    console.log("Type", formData.get("type"));
+
     const { type, projectName, projectId, taskName, taskId, taskStatus } =
       Object.fromEntries(formData);
 
-    console.log("ProjectId", projectId);
-    console.log("ProjectName", projectName);
-    console.log("method:", request.method);
     switch (type) {
       case "create-project": {
         Projects.push({
@@ -26,7 +22,7 @@ export const projectActions = async ({ request }) => {
           (project) => project.ProjectId === parseInt(projectId)
         );
         project.ProjectName = projectName;
-        console.log("Updated project:", project);
+
         return redirect(`/project/${projectId}`);
       }
 
@@ -61,7 +57,7 @@ export const projectActions = async ({ request }) => {
         if (taskStatus) {
           task.Status = taskStatus;
         }
-        console.log("Task Status:", task);
+
         return null;
       }
 
