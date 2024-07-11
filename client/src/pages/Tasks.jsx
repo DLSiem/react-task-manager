@@ -40,7 +40,7 @@ const Tasks = ({ tasks }) => {
               key={index}
               className="p-2 bg-gray-100 rounded flex justify-between"
             >
-              <Task taskName={TaskName} />
+              <Task taskName={TaskName} taskId={TaskId} />
             </li>
           ))}
         </ul>

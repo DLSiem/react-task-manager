@@ -24,6 +24,9 @@ const SideBar = ({ projects }) => {
           <h2 className="text-xl font-semibold mb-3 text-center">
             My Projects
           </h2>
+          {projects.length === 0 && (
+            <p className="text-center text-gray-500">No projects found</p>
+          )}
           <ul className="space-y-2 overflow-auto max-h-80">
             {projects.map(({ ProjectId, ProjectName }, index) => (
               <li
