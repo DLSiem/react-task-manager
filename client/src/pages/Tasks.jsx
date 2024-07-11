@@ -1,20 +1,40 @@
 import { useState } from "react";
-import {} from "react-router-dom";
+import { useFetcher, useParams } from "react-router-dom";
 import { FaEdit, FaPlus, FaTrash, FaSave } from "react-icons/fa";
 import propTypes from "prop-types";
 
 const Tasks = ({ tasks }) => {
+  const [taskName, setTaskName] = useState("");
+  const fetcher = useFetcher();
+  const params = useParams();
+
+  const projectId = parseInt(params.projectId);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Task Name:", taskName);
+    fetcher.submit(
+      {
+        type: "create-task",
+        taskName: taskName,
+        projectId: projectId,
+      },
+      {
+        method: "post",
+      }
+    );
+    setTaskName("");
+  };
+
   return (
     <>
       <section className="mt-4">
-        <form
-          method="post"
-          className="flex space-x-4"
-          //   onSubmit={handleCreateTask}
-        >
+        <form method="post" className="flex space-x-4" onSubmit={handleSubmit}>
           <input
             type="text"
             name="taskName"
+            value={taskName}
+            onChange={(e) => setTaskName(e.target.value)}
             className="flex-grow p-2 border border-gray-300 rounded"
             placeholder="Enter task name"
           />
@@ -62,22 +82,39 @@ Tasks.propTypes = {
 
 export default Tasks;
 
-const Task = ({ taskName }) => {
+const Task = ({ taskName, taskId }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [name, setName] = useState(taskName);
+  const fetcher = useFetcher();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetcher.submit(
+      {
+        type: "update-task",
+        taskId: taskId,
+        taskName: name,
+      },
+      {
+        method: "PATCH",
+      }
+    );
+    setIsEditing(false);
+  };
+
   let taskContent;
 
   if (isEditing) {
     taskContent = (
-      <form className="w-full flex">
+      <form className="w-full flex" onSubmit={handleSubmit}>
         <input
           type="text"
-          defaultValue={taskName}
+          defaultValue={name}
+          name={name}
+          onChange={(e) => setName(e.target.value)}
           className="flex-grow text-lg  border border-gray-300 rounded mr-2"
         />
-        <button
-          className="flex items-center text-blue-500"
-          onClick={() => setIsEditing(false)}
-        >
+        <button className="flex items-center text-blue-500">
           <FaSave className="mr-2" />
         </button>
       </form>
@@ -99,11 +136,28 @@ const Task = ({ taskName }) => {
   return (
     <>
       {taskContent}
-      <form className="flex">
-        <button className="flex items-center text-red-500">
-          <FaTrash className="" />
-        </button>
-      </form>
+
+      <button
+        className="flex items-center text-red-500"
+        onClick={() => {
+          fetcher.submit(
+            {
+              type: "delete-task",
+              taskId: taskId,
+            },
+            {
+              method: "DELETE",
+            }
+          );
+        }}
+      >
+        <FaTrash className="" />
+      </button>
     </>
   );
+};
+
+Task.propTypes = {
+  taskName: propTypes.string,
+  taskId: propTypes.number,
 };

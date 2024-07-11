@@ -6,7 +6,8 @@ export const projectActions = async ({ request }) => {
     const formData = await request.formData();
     console.log("Form data:", formData.get("projectName"));
     console.log("Type", formData.get("type"));
-    const { type, projectName, projectId } = Object.fromEntries(formData);
+    const { type, projectName, projectId, taskName, taskId } =
+      Object.fromEntries(formData);
 
     console.log("ProjectId", projectId);
     console.log("ProjectName", projectName);
@@ -37,6 +38,31 @@ export const projectActions = async ({ request }) => {
         Tasks.filter((task) => task.ProjectId === parseInt(projectId));
         Projects.splice(index, 1);
         return redirect("/");
+      }
+
+      case "create-task": {
+        // create task
+        Tasks.push({
+          TaskId: Math.floor(Math.random() * 10000000) + 20,
+          TaskName: taskName,
+          ProjectId: parseInt(projectId),
+          Status: "Pending",
+        });
+        return null;
+      }
+
+      case "update-task": {
+        const task = Tasks.find((task) => task.TaskId === parseInt(taskId));
+        task.TaskName = taskName;
+        return null;
+      }
+
+      case "delete-task": {
+        const index = Tasks.findIndex(
+          (task) => task.TaskId === parseInt(taskId)
+        );
+        Tasks.splice(index, 1);
+        return null;
       }
 
       default:
