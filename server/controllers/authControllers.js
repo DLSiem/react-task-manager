@@ -72,7 +72,7 @@ exports.login = async (req, res) => {
         { userId },
         process.env.JWT_SECRET,
         {
-          expiresIn: "2m",
+          expiresIn: "20m",
         },
         (err, token) => {
           if (err) {
@@ -107,7 +107,6 @@ exports.protected = async (req, res) => {
   const token = authHeader.split(" ")[1];
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
     const user = await User.findById(decoded.userId);
     if (!user) {
       return res.status(400).json({

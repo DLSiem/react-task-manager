@@ -1,6 +1,6 @@
-import { NavLink } from "react-router-dom";
-
+import { NavLink, useRouteLoaderData, Form } from "react-router-dom";
 const Header = () => {
+  const isAuthenticated = useRouteLoaderData("root");
   return (
     <header>
       <nav className="bg-gray-800 p-2">
@@ -39,26 +39,37 @@ const Header = () => {
                 About
               </NavLink>
             </li>
-            <li className="border rounded bg-gray-600 hover:bg-gray-700 px-2 pt-1 items-center mx-1">
-              <NavLink
-                to="login"
-                className={({ isActive }) =>
-                  isActive ? "text-white font-bold" : "text-white"
-                }
-              >
-                Log In
-              </NavLink>
-            </li>
-            <li className="border rounded bg-blue-600 hover:bg-blue-700 px-2 pt-1 items-center mx-1">
-              <NavLink
-                to="signup"
-                className={({ isActive }) =>
-                  isActive ? "text-white font-bold" : "text-white "
-                }
-              >
-                Sign Up
-              </NavLink>
-            </li>
+            {!isAuthenticated && (
+              <>
+                <li className="border rounded bg-gray-600 hover:bg-gray-700 px-2 py-1 items-center mx-1">
+                  <NavLink
+                    to="login"
+                    className={({ isActive }) =>
+                      isActive ? "text-white font-bold" : "text-white"
+                    }
+                  >
+                    Log In
+                  </NavLink>
+                </li>
+                <li className="border rounded bg-blue-600 hover:bg-blue-700 px-2 py-1 items-center mx-1">
+                  <NavLink
+                    to="signup"
+                    className={({ isActive }) =>
+                      isActive ? "text-white font-bold" : "text-white "
+                    }
+                  >
+                    Sign Up
+                  </NavLink>
+                </li>
+              </>
+            )}
+            {isAuthenticated && (
+              <li className="border rounded bg-red-600 hover:bg-red-700 px-2 py-1 items-center mx-1">
+                <Form action="/logout" method="POST">
+                  <button className="text-white">Logout</button>
+                </Form>
+              </li>
+            )}
           </ul>
         </div>
       </nav>

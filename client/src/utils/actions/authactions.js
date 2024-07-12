@@ -14,11 +14,9 @@ export const authActions = async ({ request }) => {
         },
         body: JSON.stringify({ email, password }),
       });
-      console.log("response:", response);
-      // status code
-      console.log("status code", response.status);
+
       const data = await response.json();
-      console.log("response data:", data);
+
       if (response.status === 201) {
         return redirect("/login");
       } else if (response.status === 400) {
@@ -29,9 +27,30 @@ export const authActions = async ({ request }) => {
       break;
     }
     case "login": {
-      console.log("login");
+      const response = await fetch(`http://localhost:4000/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      console.log("response data: ", data);
+      if (response.status === 400) {
+        return json({ message: data.message });
+      }
+      if (response.status === 200) {
+        localStorage.setItem("token", data.token);
+        console.log("token data", data.token);
+        return redirect("/");
+      }
       break;
     }
   }
   return null;
+};
+
+export const logout = async () => {
+  localStorage.removeItem("token");
+  return redirect("/login");
 };

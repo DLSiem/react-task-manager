@@ -14,12 +14,17 @@ import {
   loadProjectDetails,
 } from "./utils/loaders/project";
 import { projectActions } from "./utils/actions/projectactions";
-import { authActions } from "./utils/actions/authactions";
+import { authActions, logout } from "./utils/actions/authactions";
+
+import ProtectedRoute from "./components/ProtectedRoute";
+import { isAuthenticated } from "./utils/auth";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    id: "root",
+    loader: isAuthenticated,
     errorElement: <Error />,
     children: [
       {
@@ -30,7 +35,11 @@ const router = createBrowserRouter([
           {
             path: "/",
             index: true,
-            element: <Home />,
+            element: (
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            ),
           },
           {
             path: "create-project",
@@ -62,6 +71,10 @@ const router = createBrowserRouter([
         path: "/login",
         element: <Login />,
         action: authActions,
+      },
+      {
+        path: "logout",
+        action: logout,
       },
     ],
   },
