@@ -6,6 +6,6 @@ const authController = require("../controllers/authControllers");
 
 router.get("/", (req, res) => res.send("Home"));
 router.get("/protected", authController.protected);
-router.get("/refreshtoken", authController.refreshToken);
+router.post("/refreshtoken", authController.refreshToken);
 
 module.exports = router;

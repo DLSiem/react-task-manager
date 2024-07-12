@@ -54,7 +54,7 @@ exports.login = async (req, res) => {
     if (email.trim() !== "" && password.trim() !== "") {
       const user = await User.findOne({ email });
       if (!user) {
-        return res.status(400).json({
+        res.status(400).json({
           message: "User not found",
         });
       }
@@ -62,14 +62,14 @@ exports.login = async (req, res) => {
       const validPassword = bcrypt.compareSync(password, user.password);
 
       if (!validPassword) {
-        return res.status(400).json({
+        res.status(400).json({
           message: "Invalid password",
         });
       }
       const userId = user._id;
 
       const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
-        expiresIn: "20m",
+        expiresIn: "1m",
       });
 
       // create refresh token
@@ -78,20 +78,20 @@ exports.login = async (req, res) => {
         expiresIn: "1d",
       });
 
-      // store refresh token in http-only cookie
+      // store refresh token in http-only cookie send to client side
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: true,
-        sameSite: "none",
-        maxAge: 1000 * 60 * 60 * 24,
+        sameSite: "strict",
       });
 
-      return res.status(200).json({
+      res.json({
         message: "Login successful",
         token,
+        refreshToken,
       });
     } else {
-      return res.status(400).json({
+      res.status(400).json({
         message: "Please fill all the fields",
       });
     }
@@ -143,17 +143,17 @@ exports.refreshToken = async (req, res) => {
         const token = jwt.sign(
           { userId: decoded.userId },
           process.env.JWT_SECRET,
-          { expiresIn: "20m" }
+          { expiresIn: "1m" }
         );
 
-        return res.status(200).json({
+        res.status(200).json({
           message: "Token refreshed",
           token,
         });
       }
     });
   } else {
-    return res.status(400).json({
+    res.status(400).json({
       message: "Refresh token not found",
     });
   }

@@ -13,7 +13,7 @@ app.use(cookieparser());
 const { MONGODB_URI, PORT } = process.env;
 
 // cors for cross origin requests from client http://localhost:5173
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: "http://localhost:5173", credentials: true })); // enable cors and allow credentials for cookies to be sent from client
 
 // connecting to MongoDB
 mongoose.connect(MONGODB_URI).then(() => {

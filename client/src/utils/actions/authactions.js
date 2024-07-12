@@ -1,7 +1,6 @@
 import { json, redirect } from "react-router-dom";
 
 export const authActions = async ({ request }) => {
-  console.log("authActions");
   const formData = await request.formData();
   const { type, email, password } = Object.fromEntries(formData);
 
@@ -33,15 +32,17 @@ export const authActions = async ({ request }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
+        credentials: "include", // send cookies
       });
+
       const data = await response.json();
-      console.log("response data: ", data);
+
       if (response.status === 400) {
         return json({ message: data.message });
       }
       if (response.status === 200) {
-        localStorage.setItem("token", data.token);
-        console.log("token data", data.token);
+        let { token } = data;
+        localStorage.setItem("token", token);
         return redirect("/");
       }
       break;
@@ -53,4 +54,22 @@ export const authActions = async ({ request }) => {
 export const logout = async () => {
   localStorage.removeItem("token");
   return redirect("/login");
+};
+
+export const refreshAccessToken = async () => {
+  const response = await fetch(`http://localhost:4000/refreshtoken`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include", // send cookies
+  });
+
+  if (response.status === 200) {
+    const data = await response.json();
+    const { token } = data;
+    localStorage.setItem("token", token);
+    return true;
+  }
+  return false;
 };

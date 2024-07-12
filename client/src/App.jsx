@@ -29,17 +29,17 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomeLayout />,
+        element: (
+          <ProtectedRoute>
+            <HomeLayout />
+          </ProtectedRoute>
+        ),
         loader: projectLoader,
         children: [
           {
             path: "/",
             index: true,
-            element: (
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            ),
+            element: <Home />,
           },
           {
             path: "create-project",
