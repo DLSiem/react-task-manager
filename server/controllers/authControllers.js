@@ -68,25 +68,28 @@ exports.login = async (req, res) => {
       }
       const userId = user._id;
 
-      jwt.sign(
-        { userId },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: "20m",
-        },
-        (err, token) => {
-          if (err) {
-            console.log(err);
-            return res.status(500).json({
-              message: "Internal server error",
-            });
-          }
-          return res.status(200).json({
-            message: "Login successful",
-            token,
-          });
-        }
-      );
+      const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+        expiresIn: "20m",
+      });
+
+      // create refresh token
+
+      const refreshToken = jwt.sign({ userId }, process.env.JWT_REFRESH_TOKEN, {
+        expiresIn: "1d",
+      });
+
+      // store refresh token in http-only cookie
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        maxAge: 1000 * 60 * 60 * 24,
+      });
+
+      return res.status(200).json({
+        message: "Login successful",
+        token,
+      });
     } else {
       return res.status(400).json({
         message: "Please fill all the fields",
@@ -125,5 +128,33 @@ exports.protected = async (req, res) => {
       return res.status(401).json({ message: "Invalid token" });
     }
     return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+exports.refreshToken = async (req, res) => {
+  if (req.cookies.refreshToken) {
+    const refreshToken = req.cookies.refreshToken;
+    jwt.verify(refreshToken, process.env.JWT_REFRESH_TOKEN, (err, decoded) => {
+      if (err) {
+        return res.status(406).json({
+          message: "Unauthorized",
+        });
+      } else {
+        const token = jwt.sign(
+          { userId: decoded.userId },
+          process.env.JWT_SECRET,
+          { expiresIn: "20m" }
+        );
+
+        return res.status(200).json({
+          message: "Token refreshed",
+          token,
+        });
+      }
+    });
+  } else {
+    return res.status(400).json({
+      message: "Refresh token not found",
+    });
   }
 };
