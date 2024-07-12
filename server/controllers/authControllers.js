@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 exports.signup = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(email, password);
 
     if (email.trim() !== "" && password.trim() !== "") {
       const user = await User.findOne({ email });

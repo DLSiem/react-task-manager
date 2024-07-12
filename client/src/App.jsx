@@ -6,12 +6,15 @@ import Layout from "./pages/Layout";
 import HomeLayout from "./pages/HomeLayout";
 import Project from "./pages/Project";
 import CreateProject from "./pages/CreateProject";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
 
 import {
   loader as projectLoader,
   loadProjectDetails,
 } from "./utils/loaders/project";
 import { projectActions } from "./utils/actions/projectactions";
+import { authActions } from "./utils/actions/authactions";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +48,20 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <About />,
+      },
+      // {
+      //   path: "/login",
+      //   element: <Login />,
+      // },
+      {
+        path: "/signup",
+        element: <Signup />,
+        action: authActions,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+        action: authActions,
       },
     ],
   },
