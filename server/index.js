@@ -21,5 +21,5 @@ mongoose.connect(MONGODB_URI).then(() => {
 const authRoutes = require("./routes/authRoutes");
 const homeRoutes = require("./routes/homeRoutes");
 
-app.get("/", homeRoutes);
+app.use("/", homeRoutes);
 app.use("/auth", authRoutes);
