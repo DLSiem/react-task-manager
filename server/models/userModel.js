@@ -2,14 +2,14 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
-    username: {
-      type: String,
-      required: true,
-    },
     email: {
       type: String,
       required: true,
       unique: true,
+    },
+    username: {
+      type: String,
+      required: true,
     },
     password: {
       type: String,
@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema(
     },
     roles: {
       type: [String],
+      default: ["user"],
     },
     profilePicture: {
       type: String,
@@ -29,9 +30,11 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// set the username to email except the domain part
-userSchema.pre("save", function (next) {
-  this.username = this.email.split("@")[0];
+// Set the username to email except the domain part before validation
+userSchema.pre("validate", function (next) {
+  if (this.isModified("email")) {
+    this.username = this.email.split("@")[0];
+  }
   next();
 });
 
